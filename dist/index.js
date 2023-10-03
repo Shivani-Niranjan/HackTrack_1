@@ -4,46 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mongodb_1 = require("mongodb");
 // import routes from "./routes/events";
 const login_1 = __importDefault(require("./routes/login"));
+const create_1 = __importDefault(require("./routes/create"));
+const studentsList_1 = __importDefault(require("./routes/studentsList"));
+const staffsList_1 = __importDefault(require("./routes/staffsList"));
+const hackathonList_1 = __importDefault(require("./routes/hackathonList"));
+const mentor_1 = __importDefault(require("./routes/mentor"));
+// import display from "./routes/display";
+const display_1 = __importDefault(require("./routes/display"));
 const app = (0, express_1.default)();
-const port = 5000;
+const port = 5001;
 // app.use("/api/v1/doctors", doctorRoutes); // for express
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
-const mongoUrl = 'mongodb://0.0.0.0:27017';
-const dbName = 'Hackathon';
-// const client = new MongoClient(mongoUrl);
-// await client.connect();
-// const db: Db = client.db(dbName);
-// const teamCollection = db.collection('team');
-// const eventCollection = db.collection('event');
-// // app.use('/hacktrack/events', routes);
-// app.use('/hacktrack/login', login);
-// app.listen(port, () => {
-// console.log(`server listening to port ${port}`);
-// });
-async function connectToMongoDB() {
-    const client = new mongodb_1.MongoClient(mongoUrl);
-    try {
-        await client.connect();
-        const db = client.db(dbName);
-        const teamCollection = db.collection('team');
-        const eventCollection = db.collection('event');
-        //   //Now you can start your Express server here or define your routes.
-        //   app.get('/hacktrack/', (req: Request, res: Response) => {
-        //     // console.log(req.query);
-        //     res.send("My first API route");
-        //   });
-        // Add the login route
-        app.use('/hacktrack/login', login_1.default);
-        app.listen(port, () => {
-            console.log(`Server listening to port ${port}`);
-        });
-    }
-    catch (error) {
-        console.error("Error connecting to MongoDB:", error);
-    }
-}
-connectToMongoDB();
+app.use('/hacktrack/login', login_1.default);
+app.use('/hacktrack/create', create_1.default);
+app.use('/hacktrack/studentsList', studentsList_1.default);
+app.use('/hacktrack/staffsList', staffsList_1.default);
+app.use('/hacktrack/hackathonList', hackathonList_1.default);
+app.use('/hacktrack/mentor', mentor_1.default);
+app.use('/hacktrack/display', display_1.default);
+app.listen(port, () => {
+    console.log(`Server listening to port ${port}`);
+});
